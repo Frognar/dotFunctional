@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/solution/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Frognar.DotFunctional/Frognar.DotFunctional.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Frognar.DotFunctional.Tests/Frognar.DotFunctional.Tests.csproj" />
+  </Folder>
+</Solution>

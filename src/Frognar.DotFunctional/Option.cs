@@ -37,6 +37,12 @@ public static class Option
                         ArgumentNullException.ThrowIfNull(map);
                         return opt.Match(() => None, v => Some(map(v)));
                 }
+
+                public Option<R> Bind(Func<T, Option<R>> bind)
+                {
+                        ArgumentNullException.ThrowIfNull(bind);
+                        return opt.Match(() => None, bind);
+                }
         }
 
         extension<T, R>(Option<Func<T, R>> optF)

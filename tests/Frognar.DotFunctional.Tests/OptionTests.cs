@@ -175,3 +175,28 @@ public sealed class OptionApplicativeLawTests
                        == u.Apply(v.Apply(w));
         }
 }
+
+public sealed class OptionMonadLawTests
+{
+        [Property]
+        public bool LeftIdentityLaw(int value)
+        {
+                Func<int, Option<int>> f = x => x > 0 ? Some(x) : None;
+                return Some(value).Bind(f) == f(value);
+        }
+
+
+        [Property(Arbitrary = [typeof(ArbitraryOption)])]
+        public bool RightIdentityLaw(Option<int> optV)
+        {
+                return optV.Bind(Some) == optV;
+        }
+
+        [Property(Arbitrary = [typeof(ArbitraryOption)])]
+        public bool AssociativityLaw(Option<int> optV)
+        {
+                Func<int, Option<string>> f = x => x > 0 ? Some(x.ToString()) : None;
+                Func<string, Option<int>> g = x => x.Length > 10 ? Some(x.Length) : None;
+                return optV.Bind(f).Bind(g) == optV.Bind(v => f(v).Bind(g));
+        }
+}

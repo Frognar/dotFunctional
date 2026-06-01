@@ -1,7 +1,7 @@
 ﻿using FsCheck;
 using FsCheck.Fluent;
 using FsCheck.Xunit;
-using static Frognar.DotFunctional.F;
+using static Frognar.DotFunctional.Basis;
 
 namespace Frognar.DotFunctional.Tests;
 

@@ -1,4 +1,4 @@
-using static Frognar.DotFunctional.F;
+using static Frognar.DotFunctional.Basis;
 
 namespace Frognar.DotFunctional;
 
@@ -28,7 +28,7 @@ public readonly record struct Option<T> : IEquatable<NoneType>
 
 public readonly record struct NoneType;
 
-public static class F
+public static class Basis
 {
         public static readonly NoneType None = default!;
         public static Option<T> Some<T>(T value) => Option<T>.Some(value);

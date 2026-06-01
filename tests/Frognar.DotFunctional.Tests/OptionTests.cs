@@ -68,7 +68,10 @@ public sealed class OptionTests
                 Option<string> some = Some(value.Get);
                 return some.ToString() == $"Some({value.Get})";
         }
+}
 
+public sealed class OptionEqualityTests
+{
         [Fact]
         public void GetHashCode_None_ReturnsZero()
         {

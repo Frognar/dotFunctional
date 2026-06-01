@@ -61,11 +61,7 @@ public static class Option
         {
                 public Option<Func<T2, R>> Apply(Option<T1> optV)
                 {
-                        return optF.Match(
-                                () => None,
-                                f => optV.Match(
-                                        () => None,
-                                        t1 => Some<Func<T2, R>>(t2 => f(t1, t2))));
+                        return optF.Map(Curry).Apply(optV);
                 }
         }
 }

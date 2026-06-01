@@ -120,3 +120,20 @@ public sealed class OptionEqualityTests
                 Assert.Equal(none1, none2);
         }
 }
+
+public sealed class OptionFunctorLawTests
+{
+        [Property(Arbitrary = [typeof(ArbitraryOption)])]
+        public bool IdentityLaw(Option<string> option)
+        {
+                return option.Map(Id) == option;
+        }
+
+        [Property(Arbitrary = [typeof(ArbitraryOption)])]
+        public bool CompositionLaw(Option<int> option)
+        {
+                Func<int, bool> f = i => i > 0;
+                Func<bool, string> g = i => i.ToString();
+                return option.Map(f).Map(g) == option.Map(v => g(f(v)));
+        }
+}

@@ -28,7 +28,19 @@ public readonly record struct Option<T> : IEquatable<NoneType>
 
 public readonly record struct NoneType;
 
-public static class Basis
+public static class Option
+{
+        extension<T, R>(Option<T> opt)
+        {
+                public Option<R> Map(Func<T, R> map)
+                {
+                        ArgumentNullException.ThrowIfNull(map);
+                        return opt.Match(() => None, v => Some(map(v)));
+                }
+        }
+}
+
+public static partial class Basis
 {
         public static readonly NoneType None = default!;
         public static Option<T> Some<T>(T value) => Option<T>.Some(value);

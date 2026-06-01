@@ -137,3 +137,41 @@ public sealed class OptionFunctorLawTests
                 return option.Map(f).Map(g) == option.Map(v => g(f(v)));
         }
 }
+
+public sealed class OptionApplicativeLawTests
+{
+        [Property(Arbitrary = [typeof(ArbitraryOption)])]
+        public bool IdentityLaw(Option<int> optV)
+        {
+                return Some<Func<int, int>>(Id).Apply(optV) == optV;
+        }
+
+        [Property]
+        public bool HomomorphismLaw(int x)
+        {
+                Func<int, bool> f = i => i > 0;
+                return Some(f).Apply(Some(x)) == Some(f(x));
+        }
+
+        [Property]
+        public bool InterchangeLaw(bool uIsSome, int y)
+        {
+                Option<Func<int, bool>> u = uIsSome ? Some((int x) => x > 0) : None;
+                Func<Func<int, bool>, bool> applyY = f => f(y);
+                return u.Apply(Some(y)) == Some(applyY).Apply(u);
+        }
+
+        [Property(Arbitrary = [typeof(ArbitraryOption)])]
+        public bool CompositionLaw(bool uIsSome, bool vIsSome, Option<int> w)
+        {
+                Func<Func<bool, string>, Func<int, bool>, Func<int, string>> compose = (f, g) => v => f(g(v));
+                Option<Func<bool, string>> u = uIsSome ? Some((bool x) => x.ToString()) : None;
+                Option<Func<int, bool>> v = vIsSome ? Some((int x) => x > 0) : None;
+
+                return Some(compose)
+                               .Apply(u)
+                               .Apply(v)
+                               .Apply(w)
+                       == u.Apply(v.Apply(w));
+        }
+}

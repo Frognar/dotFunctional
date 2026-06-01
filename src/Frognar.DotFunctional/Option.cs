@@ -38,6 +38,30 @@ public static class Option
                         return opt.Match(() => None, v => Some(map(v)));
                 }
         }
+
+        extension<T, R>(Option<Func<T, R>> optF)
+        {
+                public Option<R> Apply(Option<T> optV)
+                {
+                        return optF.Match(
+                                () => None,
+                                f => optV.Match(
+                                        () => None,
+                                        v => Some(f(v))));
+                }
+        }
+
+        extension<T1, T2, R>(Option<Func<T1, T2, R>> optF)
+        {
+                public Option<Func<T2, R>> Apply(Option<T1> optV)
+                {
+                        return optF.Match(
+                                () => None,
+                                f => optV.Match(
+                                        () => None,
+                                        t1 => Some<Func<T2, R>>(t2 => f(t1, t2))));
+                }
+        }
 }
 
 public static partial class Basis

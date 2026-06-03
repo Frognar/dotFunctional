@@ -61,40 +61,78 @@ public static class Option
                 }
         }
 
-        extension<T, R>(Option<Func<T, R>> optF)
+        extension<T, R>(
+                Option<Func<T, R>> optF)
         {
-                public Option<R> Apply(Option<T> optV)
-                {
-                        return optF.Match(
+                public Option<R> Apply(Option<T> optV) =>
+                        optF.Match(
                                 () => None,
                                 f => optV.Match(
                                         () => None,
                                         v => Some(f(v))));
-                }
         }
 
-        extension<T1, T2, R>(Option<Func<T1, T2, R>> optF)
+        extension<T1, T2, R>(
+                Option<Func<T1, T2, R>> optF)
         {
-                public Option<Func<T2, R>> Apply(Option<T1> optV)
-                {
-                        return optF.Map(Curry).Apply(optV);
-                }
+                public Option<Func<T2, R>>
+                        Apply(Option<T1> optV) => optF.Map(Curry).Apply(optV);
         }
 
-        extension<T1, T2, T3, R>(Option<Func<T1, T2, T3, R>> optF)
+        extension<T1, T2, T3, R>(
+                Option<Func<T1, T2, T3, R>> optF)
         {
-                public Option<Func<T2, T3, R>> Apply(Option<T1> optV)
-                {
-                        return optF.Map(CurryFirst).Apply(optV);
-                }
+                public Option<Func<T2, T3, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
         }
 
-        extension<T1, T2, T3, T4, R>(Option<Func<T1, T2, T3, T4, R>> optF)
+        extension<T1, T2, T3, T4, R>(
+                Option<Func<T1, T2, T3, T4, R>> optF)
         {
-                public Option<Func<T2, T3, T4, R>> Apply(Option<T1> optV)
-                {
-                        return optF.Map(CurryFirst).Apply(optV);
-                }
+                public Option<Func<T2, T3, T4, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
+        }
+
+        extension<T1, T2, T3, T4, T5, R>(
+                Option<Func<T1, T2, T3, T4, T5, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, T5, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
+        }
+
+        extension<T1, T2, T3, T4, T5, T6, R>(
+                Option<Func<T1, T2, T3, T4, T5, T6, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, T5, T6, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
+        }
+
+        extension<T1, T2, T3, T4, T5, T6, T7, R>(
+                Option<Func<T1, T2, T3, T4, T5, T6, T7, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, T5, T6, T7, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
+        }
+
+        extension<T1, T2, T3, T4, T5, T6, T7, T8, R>(
+                Option<Func<T1, T2, T3, T4, T5, T6, T7, T8, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, T5, T6, T7, T8, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
+        }
+
+        extension<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>(
+                Option<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, T5, T6, T7, T8, T9, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
+        }
+
+        extension<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>(
+                Option<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, R>>
+                        Apply(Option<T1> optV) => optF.Map(CurryFirst).Apply(optV);
         }
 }
 

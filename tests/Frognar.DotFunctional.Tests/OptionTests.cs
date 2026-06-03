@@ -76,6 +76,24 @@ public sealed class OptionTests
                 Assert.Equal(None, option.Where(s => s.Length > 0));
         }
 
+        [Property]
+        public void Iter_Some_ExecutesAction(NonEmptyString value)
+        {
+                Option<string> some = value.Get;
+                bool executed = false;
+                some.Iter(_ => executed = true);
+                Assert.True(executed);
+        }
+
+        [Fact]
+        public void Iter_None_DoesNotExecuteAction()
+        {
+                Option<string> none = None;
+                bool executed = false;
+                none.Iter(_ => executed = true);
+                Assert.False(executed);
+        }
+
         [Fact]
         public void ToString_None_ReturnsNone()
         {

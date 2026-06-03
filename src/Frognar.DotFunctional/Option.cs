@@ -1,4 +1,5 @@
 using static Frognar.DotFunctional.Basis;
+using Unit = System.ValueTuple;
 
 namespace Frognar.DotFunctional;
 
@@ -36,6 +37,12 @@ public static class Option
                 {
                         ArgumentNullException.ThrowIfNull(predicate);
                         return opt.Match(() => None, v => predicate(v) ? opt : None);
+                }
+
+                public Option<Unit> Iter(Action<T> action)
+                {
+                        ArgumentNullException.ThrowIfNull(action);
+                        return opt.Map(action.ToFunc());
                 }
         }
 

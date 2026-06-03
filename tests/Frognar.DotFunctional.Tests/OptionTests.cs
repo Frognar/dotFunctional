@@ -26,21 +26,21 @@ public sealed class OptionTests
         public void ImplicitConversion_Default_ReturnsNone()
         {
                 Option<int> option = default;
-                Assert.True(option.Equals(None));
+                Assert.Equal(None, option);
         }
 
         [Fact]
         public void ImplicitConversion_Null_ReturnsNone()
         {
                 Option<string> option = null;
-                Assert.True(option.Equals(None));
+                Assert.Equal(None, option);
         }
 
         [Property]
-        public bool ImplicitConversion_NonNull_ReturnsSome(NonEmptyString value)
+        public void ImplicitConversion_NonNull_ReturnsSome(NonEmptyString value)
         {
                 Option<string> option = value.Get;
-                return option.Equals(Some(value.Get));
+                Assert.Equal(Some(value.Get), option);
         }
 
         [Fact]
@@ -63,10 +63,10 @@ public sealed class OptionTests
         }
 
         [Property]
-        public bool ToString_Some_ReturnsFormattedValue(NonEmptyString value)
+        public void ToString_Some_ReturnsFormattedValue(NonEmptyString value)
         {
                 Option<string> some = Some(value.Get);
-                return some.ToString() == $"Some({value.Get})";
+                Assert.Equal($"Some({value.Get})", some.ToString());
         }
 }
 
@@ -80,36 +80,35 @@ public sealed class OptionEqualityTests
         }
 
         [Property]
-        public bool GetHashCode_Some_IsDeterministicAndConsistent(NonEmptyString value)
+        public void GetHashCode_Some_IsDeterministicAndConsistent(NonEmptyString value)
         {
                 string v = value.Get;
                 Option<string> some1 = Some(v);
                 Option<string> some2 = Some(v);
-                return some1.GetHashCode() == some2.GetHashCode();
+                Assert.Equal(some1.GetHashCode(), some2.GetHashCode());
         }
 
         [Property]
-        public bool Equality_SameValues_AreEqual(NonEmptyString value)
+        public void Equality_SameValues_AreEqual(NonEmptyString value)
         {
                 Option<string> some1 = value.Get;
                 Option<string> some2 = value.Get;
-                return some1 == some2 && some1.Equals(some2);
+                Assert.Equal(some1, some2);
         }
 
         [Property]
-        public bool Equality_DifferentValues_AreNotEqual(NonEmptyString value)
+        public void Equality_DifferentValues_AreNotEqual(NonEmptyString value)
         {
                 Option<string> some1 = value.Get;
                 Option<string> some2 = value.Get + "_different";
-                return some1 != some2 && !some1.Equals(some2);
+                Assert.NotEqual(some1, some2);
         }
 
         [Property]
-        public bool Equality_SomeAndNone_AreNotEqual(NonEmptyString value)
+        public void Equality_SomeAndNone_AreNotEqual(NonEmptyString value)
         {
                 Option<string> some = value.Get;
-                Option<string> none = None;
-                return some != none && !some.Equals(none);
+                Assert.NotEqual(some, None);
         }
 
         [Fact]
@@ -119,84 +118,98 @@ public sealed class OptionEqualityTests
                 Option<int> none2 = None;
                 Assert.Equal(none1, none2);
         }
+
+        [Fact]
+        public void EqualityNoneType_Some_ReturnsFalse()
+        {
+                Option<string> some = Some("value");
+                Assert.False(some.Equals(None));
+        }
+
+        [Fact]
+        public void EqualityNoneType_None_ReturnsTrue()
+        {
+                Option<int> none = None;
+                Assert.True(none.Equals(None));
+        }
 }
 
 public sealed class OptionFunctorLawTests
 {
         [Property(Arbitrary = [typeof(ArbitraryOption)])]
-        public bool IdentityLaw(Option<string> option)
+        public void IdentityLaw(Option<string> option)
         {
-                return option.Map(Id) == option;
+                Assert.Equal(option, option.Map(Id));
         }
 
         [Property(Arbitrary = [typeof(ArbitraryOption)])]
-        public bool CompositionLaw(Option<int> option)
+        public void CompositionLaw(Option<int> option)
         {
                 Func<int, bool> f = i => i > 0;
                 Func<bool, string> g = i => i.ToString();
-                return option.Map(f).Map(g) == option.Map(v => g(f(v)));
+                Assert.Equal(option.Map(f).Map(g), option.Map(v => g(f(v))));
         }
 }
 
 public sealed class OptionApplicativeLawTests
 {
         [Property(Arbitrary = [typeof(ArbitraryOption)])]
-        public bool IdentityLaw(Option<int> optV)
+        public void IdentityLaw(Option<int> optV)
         {
-                return Some<Func<int, int>>(Id).Apply(optV) == optV;
+                Assert.Equal(Some<Func<int, int>>(Id).Apply(optV), optV);
         }
 
         [Property]
-        public bool HomomorphismLaw(int x)
+        public void HomomorphismLaw(int x)
         {
                 Func<int, bool> f = i => i > 0;
-                return Some(f).Apply(Some(x)) == Some(f(x));
+                Assert.Equal(Some(f).Apply(Some(x)), Some(f(x)));
         }
 
         [Property]
-        public bool InterchangeLaw(bool uIsSome, int y)
+        public void InterchangeLaw(bool uIsSome, int y)
         {
                 Option<Func<int, bool>> u = uIsSome ? Some((int x) => x > 0) : None;
                 Func<Func<int, bool>, bool> applyY = f => f(y);
-                return u.Apply(Some(y)) == Some(applyY).Apply(u);
+                Assert.Equal(u.Apply(Some(y)), Some(applyY).Apply(u));
         }
 
         [Property(Arbitrary = [typeof(ArbitraryOption)])]
-        public bool CompositionLaw(bool uIsSome, bool vIsSome, Option<int> w)
+        public void CompositionLaw(bool uIsSome, bool vIsSome, Option<int> w)
         {
                 Func<Func<bool, string>, Func<int, bool>, Func<int, string>> compose = (f, g) => v => f(g(v));
                 Option<Func<bool, string>> u = uIsSome ? Some((bool x) => x.ToString()) : None;
                 Option<Func<int, bool>> v = vIsSome ? Some((int x) => x > 0) : None;
 
-                return Some(compose)
+                Assert.Equal(Some(compose)
                                .Apply(u)
                                .Apply(v)
-                               .Apply(w)
-                       == u.Apply(v.Apply(w));
+                               .Apply(w),
+                       u.Apply(v.Apply(w)));
         }
 }
 
 public sealed class OptionMonadLawTests
 {
         [Property]
-        public bool LeftIdentityLaw(int value)
+        public void LeftIdentityLaw(int value)
         {
                 Func<int, Option<int>> f = x => x > 0 ? Some(x) : None;
-                return Some(value).Bind(f) == f(value);
+                Assert.Equal(Some(value).Bind(f), f(value));
         }
 
 
         [Property(Arbitrary = [typeof(ArbitraryOption)])]
-        public bool RightIdentityLaw(Option<int> optV)
+        public void RightIdentityLaw(Option<int> optV)
         {
-                return optV.Bind(Some) == optV;
+                Assert.Equal(optV.Bind(Some), optV);
         }
 
         [Property(Arbitrary = [typeof(ArbitraryOption)])]
-        public bool AssociativityLaw(Option<int> optV)
+        public void AssociativityLaw(Option<int> optV)
         {
                 Func<int, Option<string>> f = x => x > 0 ? Some(x.ToString()) : None;
                 Func<string, Option<int>> g = x => x.Length > 10 ? Some(x.Length) : None;
-                return optV.Bind(f).Bind(g) == optV.Bind(v => f(v).Bind(g));
+                Assert.Equal(optV.Bind(f).Bind(g), optV.Bind(v => f(v).Bind(g)));
         }
 }

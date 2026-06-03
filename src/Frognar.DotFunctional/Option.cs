@@ -30,6 +30,15 @@ public readonly record struct NoneType;
 
 public static class Option
 {
+        extension<T>(Option<T> opt)
+        {
+                public Option<T> Where(Func<T, bool> predicate)
+                {
+                        ArgumentNullException.ThrowIfNull(predicate);
+                        return opt.Match(() => None, v => predicate(v) ? opt : None);
+                }
+        }
+
         extension<T, R>(Option<T> opt)
         {
                 public Option<R> Map(Func<T, R> map)

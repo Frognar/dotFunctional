@@ -55,6 +55,27 @@ public sealed class OptionTests
                                 s => s.ToString());
         }
 
+        [Property]
+        public void Where_Some_ReturnsSomeForTruePredicate(NonEmptyString value)
+        {
+                Option<string> option = Some(value.Get);
+                Assert.Equal(Some(value.Get), option.Where(s => s.Length > 0));
+        }
+
+        [Property]
+        public void Where_Some_ReturnsNoneForFalsePredicate(NonEmptyString value)
+        {
+                Option<string> option = Some(value.Get);
+                Assert.Equal(None, option.Where(s => s.Length == 0));
+        }
+
+        [Fact]
+        public void Where_None_ReturnsNone()
+        {
+                Option<string> option = None;
+                Assert.Equal(None, option.Where(s => s.Length > 0));
+        }
+
         [Fact]
         public void ToString_None_ReturnsNone()
         {

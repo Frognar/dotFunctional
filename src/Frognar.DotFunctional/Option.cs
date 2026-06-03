@@ -80,6 +80,22 @@ public static class Option
                         return optF.Map(Curry).Apply(optV);
                 }
         }
+
+        extension<T1, T2, T3, R>(Option<Func<T1, T2, T3, R>> optF)
+        {
+                public Option<Func<T2, T3, R>> Apply(Option<T1> optV)
+                {
+                        return optF.Map(CurryFirst).Apply(optV);
+                }
+        }
+
+        extension<T1, T2, T3, T4, R>(Option<Func<T1, T2, T3, T4, R>> optF)
+        {
+                public Option<Func<T2, T3, T4, R>> Apply(Option<T1> optV)
+                {
+                        return optF.Map(CurryFirst).Apply(optV);
+                }
+        }
 }
 
 public static partial class Basis

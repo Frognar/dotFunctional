@@ -1,35 +1,34 @@
-using FsCheck.Xunit;
 using static Frognar.DotFunctional.Basis;
 
 namespace Frognar.DotFunctional.Tests;
 
 public sealed class OptionApplyTests
 {
-        Func<int, int, int> add =
+        private readonly Func<int, int, int> add =
                 (a, b) => a + b;
 
-        Func<int, int, int, int> add3 =
+        private readonly Func<int, int, int, int> add3 =
                 (a, b, c) => a + b + c;
 
-        Func<int, int, int, int, int> add4 =
+        private readonly Func<int, int, int, int, int> add4 =
                 (a, b, c, d) => a + b + c + d;
 
-        Func<int, int, int, int, int, int> add5 =
+        private readonly Func<int, int, int, int, int, int> add5 =
                 (a, b, c, d, e) => a + b + c + d + e;
 
-        Func<int, int, int, int, int, int, int> add6 =
+        private readonly Func<int, int, int, int, int, int, int> add6 =
                 (a, b, c, d, e, f) => a + b + c + d + e + f;
 
-        Func<int, int, int, int, int, int, int, int> add7 =
+        private readonly Func<int, int, int, int, int, int, int, int> add7 =
                 (a, b, c, d, e, f, g) => a + b + c + d + e + f + g;
 
-        Func<int, int, int, int, int, int, int, int, int> add8 =
+        private readonly Func<int, int, int, int, int, int, int, int, int> add8 =
                 (a, b, c, d, e, f, g, h) => a + b + c + d + e + f + g + h;
 
-        Func<int, int, int, int, int, int, int, int, int, int> add9 =
+        private readonly Func<int, int, int, int, int, int, int, int, int, int> add9 =
                 (a, b, c, d, e, f, g, h, i) => a + b + c + d + e + f + g + h + i;
 
-        Func<int, int, int, int, int, int, int, int, int, int, int> add10 =
+        private readonly Func<int, int, int, int, int, int, int, int, int, int, int> add10 =
                 (a, b, c, d, e, f, g, h, i, j) => a + b + c + d + e + f + g + h + i + j;
 
         [Fact]

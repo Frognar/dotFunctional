@@ -1,7 +1,6 @@
 root = true
 
 [*.cs]
-
 # Indentation and spacing
 indent_size = 8
 indent_style = space
@@ -14,8 +13,20 @@ insert_final_newline = false
 
 csharp_style_namespace_declarations = file_scoped
 
+# Naming style: camelCase
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+
+# Symbol specification: private readonly fields
+dotnet_naming_symbols.private_readonly_field.applicable_kinds = field
+dotnet_naming_symbols.private_readonly_field.applicable_accessibilities = private
+dotnet_naming_symbols.private_readonly_field.required_modifiers = readonly
+
+# Naming rule: private readonly field should be camelCase
+dotnet_naming_rule.private_readonly_field_should_be_camelcase.severity = error
+dotnet_naming_rule.private_readonly_field_should_be_camelcase.symbols = private_readonly_field
+dotnet_naming_rule.private_readonly_field_should_be_camelcase.style = camel_case_style
+
 # Static code analysis rule customizations
-[*.cs]
 # CA1000: Do not declare static members on generic types
 dotnet_diagnostic.CA1000.severity = none
 
